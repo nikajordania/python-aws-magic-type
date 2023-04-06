@@ -164,3 +164,40 @@ def upload_local_file(aws_s3_client, bucket_name, filename, keep_file_name, uplo
         bucket_name,
         file_name
     )
+
+
+def upload_file_into_type_folder(aws_s3_client, bucket_name, filename, keep_file_name, upload_type="upload_file"):
+    (s3_region := getenv("aws_s3_region_name", "us-west-2"))
+
+
+    file_path = Path(f"static/{filename}")
+    folder = magic.from_file(file_path, mime=True)
+    file_name = None
+
+    file_name = filename if keep_file_name else generate_file_name(type)
+
+    mime_type = split_mime_type(folder)
+
+    s3_folder_path = f"{mime_type}/{file_name}"
+
+    # print(s3_folder_path)
+    aws_s3_client.upload_file(
+            file_path,
+            bucket_name,
+            s3_folder_path,
+            ExtraArgs={'ContentType': folder}
+    )
+
+    # public URL
+    return "https://s3-{0}.amazonaws.com/{1}/{2}/{3}".format(
+        s3_region,
+        bucket_name,
+        mime_type,
+        file_name
+    )
+
+
+def split_mime_type(mime_type) -> str:
+    if "/" in mime_type:
+        return mime_type.split("/")[0]
+    return mime_type

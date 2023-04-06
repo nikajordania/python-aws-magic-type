@@ -6,7 +6,7 @@ from bucket.policy import read_bucket_policy, assign_policy
 from bucket.versioning import versioning
 from bucket.encryption import set_bucket_encryption, read_bucket_encryption
 from bucket.organize import object_per_extension
-from object.crud import download_file_and_upload_to_s3, get_objects, upload_local_file
+from object.crud import download_file_and_upload_to_s3, get_objects, upload_local_file, upload_file_into_type_folder
 from object.versioning import list_object_versions, rollback_to_version
 from my_args import bucket_arguments, object_arguments
 import argparse
@@ -83,7 +83,7 @@ def main():
                 print(upload_local_file(s3_client, args.bucket_name, args.local_object, args.keep_file_name, args.upload_type))
 
             if args.upload_object:
-                print(upload_local_file(s3_client, args.bucket_name, args.upload_object, args.keep_file_name, args.upload_type))
+                print(upload_file_into_type_folder(s3_client, args.bucket_name, args.upload_object, args.keep_file_name, args.upload_type))
 
             if args.name:
                 if args.list_versions:

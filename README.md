@@ -64,3 +64,9 @@ Rollback to version
 ```shell
 python main.py object "important.txt" "bucket-with-vers" -r_b_t "En8tj6pxH3nduvOzGpEs5RP5QN6M5UQ6"
 ```
+
+Upload File into folder based on file extention
+
+```shell
+python main.py object "bucket_name" -u_o "upload_file"
+```
